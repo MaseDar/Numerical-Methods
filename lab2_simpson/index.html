@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script>
+        window.onload = function () {
+            var options = Start();        
+            var chart = new CanvasJS.Chart("chartContainer", options);
+            chart.render();
+
+            $("#click").click(function () {
+                var options = Start();        
+                var chart = new CanvasJS.Chart("chartContainer", options);
+                chart.render();
+            })
+        }
+        </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab2</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>lab2</title>
+        <!-- <script> window.onload = myFunction();   </script>  -->
+</head>
+<body>
+    
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+                <h1 class="display-5">Молотков Влад ИВТ-32БО (Метод Симпсона)</h1> 
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+                <h1 class="display-6">y =ε*sin(βx/(α<sup>2</sup>-x<sup>2</sup>))+γ*cosδx </h1> 
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="containter px-4">
+        <div class="row gx-5">
+            <div class="col-1">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">a</span>
+                    <input id="a" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">b</span>
+                    <input id="b" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">α</span>
+                    <input id="alpha" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">β</span>
+                    <input id="betta" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">γ</span>
+                    <input id="gamma" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">δ</span>
+                    <input  id="delta" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">ε</span>
+                    <input id="epsilon" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">A</span>
+                    <input id="A" value="-10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">B</span>
+                    <input id="B" value="10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">n</span>
+                    <input id="n" value="10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+                <button id="click">Построить</button>
+        </div>
+        <div class="col">
+            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        </div>
+        
+    </div>
+    
+    <script src="js/js.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
