@@ -1,36 +1,38 @@
+// Да-да, глобальные переменные - плохо, но время поджимает.
+// Позже можете поправить, или пнуть меня vk.com/masedar
 let alpha, betta, gamma, delta, epsilon;
-let A, B, aa, bb, n, max = 0;
-
+let A, B, aa, bb, n, dl, param, max = 0;
+// Получение параметров
 function getParams(){
+    param = +document.getElementById("param").value
     aa = +document.getElementById("a").value
     bb = +document.getElementById("b").value
     A = +document.getElementById("A").value
     B = +document.getElementById("B").value
     n = +document.getElementById("n").value
+    dl = +document.getElementById("dl").value
     alpha = +document.getElementById("alpha").value;
     betta = +document.getElementById("betta").value;
     gamma = +document.getElementById("gamma").value;
     delta = +document.getElementById("delta").value;
     epsilon = +document.getElementById("epsilon").value;
-    console.log("a, b, ..", {aa, bb, alpha, betta, gamma, delta, epsilon})
+    console.log("a, b, ..", {dl, param, aa, bb, alpha, betta, gamma, delta, epsilon})
+    return {dl, param, aa, bb, alpha, betta, gamma, delta, epsilon}
 }
-
 
 function Start(){
     
-    getParams();
+    let {dl, param, aa, bb, alpha, betta, gamma, delta, epsilon} = getParams();
     dataPoints = [];
-    let param = 1;
-    dataPoints = printf(A, B, param, aa, bb, n, dl = 0.0625, dataPoints)
-    
+    dataPoints = printf(A, B, param, aa, bb, n, dl, dataPoints, alpha, betta, gamma, delta, epsilon)
     var data = [];
+    // Тип отрисовки линий между точками - линия
     var dataSeries = { type: "line" };
-
     dataSeries.dataPoints = dataPoints;
     data.push(dataSeries);
+    
     console.log("data", data)
-
-    //Better to construct options first and then pass it as a parameter
+    // Параметры для new CanvasJS.Chart() в HTML
     var options = {
         zoomEnabled: true,
         animationEnabled: true,
@@ -40,117 +42,80 @@ function Start(){
         axisY: {
             lineThickness: 1
         },
-        data: data  // random data
+        // Те самые точки, которые мы и собираем
+        data: data  
         };
     return options
 }
 
-function myFunction(x) {
+// Наша функция 
+function myFunction(x, alpha, betta, gamma, delta, epsilon) {
     let difference = alpha**2-x**2 == 0 ? 0.00001 : alpha**2-x**2;
     return epsilon * Math.sin( (betta*x) / (difference)  ) + gamma * Math.cos(delta*x);
 }
 
-function printf(A, B, param, aa, bb,  n, dl, dataPoints){
-
-    // ctx.fillStyle = "#FF00FF"; 
-  
-  if ( param == 1)
-  {
-      for(let a = A; a <= B; a = a+0.01){
-           var nn =  Runge (a, b, n, dl);
-           var y = simpson (aa, bb, nn);
-           dataPoints.push({
-               x: -A + a,
-            //    ТОЧНО ЛИ -y??
+// Вычисление точек для CanvasJS
+function printf(A, B, param, aa, bb,  n, dl, dataPoints, alpha, betta, gamma, delta, epsilon){
+// выборка выбранного параметра alpha - 1, betta - 2 ... и проход по ним соответственно
+  switch(param){
+    case 1:
+        for(alpha = A; alpha <= B; alpha += dl){
+            var y = simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon);
+            dataPoints.push({
+               x: -A + alpha,
                y: -y
             })
-            // console.log("test", dataPoints)
-    //   ctx.fillRect(Math.round(-A + a), Math.round(Number(D)*perY - y * perY), 1 , 1);
-
-    }
+        }
+        break;
+    case 2:
+        for( betta = A; betta <= B; betta += dl){
+            var y = simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon);
+               dataPoints.push({
+                x: -A + betta,
+                y: -y
+             })
+        }
+        break;
+    case 3:
+        for(gamma = A; gamma <= B; gamma += dl){
+            var y = simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon);
+            dataPoints.push({
+             x: -A + gamma,
+             y: -y
+          })
+        }
+        break;
+    case 4:
+        for(delta = A; delta <= B; delta += dl){
+            var y = simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon);
+            dataPoints.push({
+                x: -A + delta,
+                y: -y
+            })
+        }
+        break;
+    case 5:
+        for(epsilon = A; epsilon <= B; epsilon += dl){
+            var y = simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon);
+            dataPoints.push({
+                x: -A + epsilon,
+                y: -y
+            })
+        }
+        break;
   }
-  if ( param == 2)
-  {
-      for(b= Number(A); b <= Number(B); b = b+0.01/perX){
-           var nn =  Runge (a, b, n, dl);
-           var y = simpson (aa, bb, nn);
-           dataPoints.push({
-            x: -A + b,
-            y: -y
-         })
-    //   ctx.fillRect(Math.round(-Number(A)*perX+ b * perX), Math.round(Number(D)*perY - y * perY), 1 , 1);
-    }
-  }
-  if ( param == 3){
-      for(m= Number(A); m <= Number(B); m = m+0.01/perX){
-           var nn =  Runge (a, b, n, dl);
-           var y = simpson (aa, bb, nn);
-    //   ctx.fillRect(Math.round(-Number(A)*perX+ m * perX), Math.round(Number(D)*perY - y * perY), 1 , 1);
-    }
-  }
-  if ( param == 4)
-  {
-      for(e= Number(A); e <= Number(B); e = e+0.01/perX){
-           var nn = Runge (a, b, n, dl);
-           var y = simpson (aa, bb, nn);
-    //   ctx.fillRect(Math.round(-Number(A)*perX+ e * perX), Math.round(Number(D)*perY - y * perY), 1 , 1);
-    }
-  }
-  return dataPoints;
+  return dataPoints;    
 }
-  
-  
-function Runge (a, b, n, dl)
-{
-    var n1 = n;
-    var n2 = 2*n1;
+
+// Сам метод Симпсона https://habr.com/ru/post/479202/
+function simpson (aa, bb, n, alpha, betta, gamma, delta, epsilon){
+    const width = (bb-aa)/n;
+    let simpson_integral = 0;
+    for(let step = 0; step < n; step++) {
+        const x1 = aa + step*width;
+        const x2 = aa + (step+1)*width;
+        simpson_integral += (x2-x1)/6.0*(myFunction(x1, alpha, betta, gamma, delta, epsilon ) + 4.0*myFunction(0.5*(x1+x2), alpha, betta, gamma, delta, epsilon) + myFunction(x2, alpha, betta, gamma, delta, epsilon));
+    }
+    return simpson_integral;
+}
     
-        var I1 = simpson (aa, bb, n1);
-        var I2 = simpson (aa, bb, n2);
-    //   document.getElementById('max').innerHTML= Number(dl) ;
-    while (Math.abs (I2 - I1) > dl)
-    {
-        n1 = n2;
-        n2 = 2*n1;
-        I1 = simpson (aa, bb, n1);
-        I2 = simpson (aa, bb,n2);
-    }
-    if (n1>=max) 
-        max = n1;
-    return n1;
-}
-
-// Need fix simpson (return integral, but need y coordinate)
-function simpson (aa, bb, n){
-const width = (bb-aa)/n;
-let simpson_integral = 0;
-let dot_y = A; 
-for(let step = 0; step < n; step++) {
-    const x1 = aa + step*width;
-    const x2 = aa + (step+1)*width;
-    simpson_integral += (x2-x1)/6.0*(myFunction(x1) + 4.0*myFunction(0.5*(x1+x2)) + myFunction(x2));
-}
-return simpson_integral;
-//   var hh = (bb-aa)/n; 
-//   var f = [];
-//   var x = [];
-//   x[0] = aa;
-//   for (var i=1; i<= n; i++){
-//       x[i] = x[i-1] + hh;
-//   }
-    
-//   for (var i=0; i<= n; i++){
-//       if ((x[i]- (m))== 0)
-//           f[i] =Number(a)*Math. sin ( Number(b) *x[i]) * Math.cos ( Number(e)/(((x[i]+0.00001-Number(m)) + (x[i]-0.00001-Number(m)))/2)* (((x[i]+0.00001-Number(m)) + (x[i]-0.00001-Number(m)))/2));
-//       else
-//           f[i] = Number(a)*Math. sin ( Number(b) *x[i]) * Math.cos ( Number(e)/ ((x[i]- Number(m))* (x[i]- Number(m))));
-
-//   }
-//   var z = 0;
-//   for (var i=1; i<=Number (n); i++){
-//       z += f [i];
-//   }
-//   return hh*z;
-}
-
-  

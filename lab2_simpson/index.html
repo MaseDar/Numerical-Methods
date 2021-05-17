@@ -5,9 +5,11 @@
     <script>
         window.onload = function () {
             var options = Start();        
+            // создает диаграмму (почитать можно на canvasjs)
             var chart = new CanvasJS.Chart("chartContainer", options);
             chart.render();
 
+            // чекает событие на кнопке "Построить график" и повторно рисует диаграмму
             $("#click").click(function () {
                 var options = Start();        
                 var chart = new CanvasJS.Chart("chartContainer", options);
@@ -22,7 +24,6 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>lab2</title>
-        <!-- <script> window.onload = myFunction();   </script>  -->
 </head>
 <body>
     
@@ -44,15 +45,26 @@
     
     <div class="containter px-4">
         <div class="row gx-5">
-            <div class="col-1">
+            <div class="col-2">
+                Выберите переменную
+                <div class="input-group mb-3">
+                    <select id="param" class="form-select" aria-label="Default select example">
+                        <option selected value="1">α</option>
+                        <option value="2">β</option>
+                        <option value="3">γ</option>
+                        <option value="4">δ</option>
+                        <option value="5">ε</option>
+                    </select>
+                </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">a</span>
                     <input id="a" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">b</span>
-                    <input id="b" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    <input id="b" value="2" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
+                Переменные
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">α</span>
                     <input id="alpha" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
@@ -73,6 +85,8 @@
                     <span class="input-group-text" id="inputGroup-sizing-default">ε</span>
                     <input id="epsilon" value="1" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
+
+                Размеры окна
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">A</span>
                     <input id="A" value="-10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
@@ -81,11 +95,23 @@
                     <span class="input-group-text" id="inputGroup-sizing-default">B</span>
                     <input id="B" value="10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
+                Дополнительно
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">n</span>
                     <input id="n" value="10" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                 </div>
-                <button id="click">Построить</button>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Шаг</span>
+                    <select id="dl" class="form-select" aria-label="Default select example">
+                        <option value="0.1">0.1</option>
+                        <option selected value="0.01">0.01</option>
+                        <option value="0.001">0.001</option>
+                        <option value="0.0001">0.0001</option>
+                        
+                    </select>
+                </div>
+                
+                <button id="click" type="button" class="btn btn-primary">Построить график</button>
         </div>
         <div class="col">
             <div id="chartContainer" style="height: 370px; width: 100%;"></div>
